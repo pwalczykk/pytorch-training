@@ -1,0 +1,279 @@
+pwalczykk-t3610@pwalczykk-t3610-ubuntu-18:~/code/pytorch/000_handwritten_digits_MNIST$ ./train.py
+Training loss: 0.26761792576206356
+Bad predictions: 1148/20000 | Percentage: 5.74%
+=============================
+Training loss: 0.12798226279992053
+Bad predictions: 781/20000 | Percentage: 3.905%
+=============================
+Training loss: 0.09802257403428576
+Bad predictions: 682/20000 | Percentage: 3.41%
+=============================
+Training loss: 0.08143444620545363
+Bad predictions: 531/20000 | Percentage: 2.655%
+=============================
+Training loss: 0.06981972199594284
+Bad predictions: 547/20000 | Percentage: 2.735%
+=============================
+Training loss: 0.062232425081176705
+Bad predictions: 493/20000 | Percentage: 2.465%
+=============================
+^CTraceback (most recent call last):
+  File "./train.py", line 120, in <module>
+    network.train(epochs=50)
+  File "./train.py", line 65, in train
+    output = self.model(images)
+  File "/home/pwalczykk-t3610/.local/lib/python3.6/site-packages/torch/nn/modules/module.py", line 541, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/pwalczykk-t3610/.local/lib/python3.6/site-packages/torch/nn/modules/container.py", line 92, in forward
+    input = module(input)
+  File "/home/pwalczykk-t3610/.local/lib/python3.6/site-packages/torch/nn/modules/module.py", line 541, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/pwalczykk-t3610/.local/lib/python3.6/site-packages/torch/nn/modules/linear.py", line 87, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/home/pwalczykk-t3610/.local/lib/python3.6/site-packages/torch/nn/functional.py", line 1370, in linear
+    ret = torch.addmm(bias, input, weight.t())
+KeyboardInterrupt
+pwalczykk-t3610@pwalczykk-t3610-ubuntu-18:~/code/pytorch/000_handwritten_digits_MNIST$ ./train.py
+Training loss: 0.2639328389170543
+Bad predictions: 1699/20000 | Percentage: 8.495%
+=============================
+Training loss: 0.12409307528630063
+Bad predictions: 939/20000 | Percentage: 4.695%
+=============================
+Training loss: 0.0938848125733778
+Bad predictions: 744/20000 | Percentage: 3.72%
+=============================
+Training loss: 0.08027151496534193
+Bad predictions: 627/20000 | Percentage: 3.135%
+=============================
+Training loss: 0.06646283769899576
+Bad predictions: 878/20000 | Percentage: 4.39%
+=============================
+Training loss: 0.060128369554292745
+Bad predictions: 387/20000 | Percentage: 1.935%
+=============================
+Training loss: 0.053853625470364874
+Bad predictions: 494/20000 | Percentage: 2.47%
+=============================
+Training loss: 0.04805393569170842
+Bad predictions: 383/20000 | Percentage: 1.915%
+=============================
+Training loss: 0.04282325488826031
+Bad predictions: 379/20000 | Percentage: 1.895%
+=============================
+Training loss: 0.040519717274419983
+Bad predictions: 514/20000 | Percentage: 2.57%
+=============================
+Training loss: 0.039317657425511195
+Bad predictions: 336/20000 | Percentage: 1.68%
+=============================
+Training loss: 0.035353214961563836
+Bad predictions: 200/20000 | Percentage: 1.0%
+=============================
+Training loss: 0.03227488537757005
+Bad predictions: 275/20000 | Percentage: 1.375%
+=============================
+Training loss: 0.03174350558813231
+Bad predictions: 248/20000 | Percentage: 1.24%
+=============================
+Training loss: 0.02865315327231762
+Bad predictions: 218/20000 | Percentage: 1.09%
+=============================
+Training loss: 0.026837397953944155
+Bad predictions: 231/20000 | Percentage: 1.155%
+=============================
+Training loss: 0.025112576555659384
+Bad predictions: 346/20000 | Percentage: 1.73%
+=============================
+Training loss: 0.023633578507012195
+Bad predictions: 239/20000 | Percentage: 1.195%
+=============================
+Training loss: 0.023080171567795887
+Bad predictions: 168/20000 | Percentage: 0.84%
+=============================
+Training loss: 0.01979518673384061
+Bad predictions: 208/20000 | Percentage: 1.04%
+=============================
+Training loss: 0.018781850610442144
+Bad predictions: 175/20000 | Percentage: 0.875%
+=============================
+Training loss: 0.016295284485342863
+Bad predictions: 244/20000 | Percentage: 1.22%
+=============================
+Training loss: 0.018739010129220784
+Bad predictions: 168/20000 | Percentage: 0.84%
+=============================
+Training loss: 0.017248425412397735
+Bad predictions: 84/20000 | Percentage: 0.42%
+=============================
+Training loss: 0.01554518003562182
+Bad predictions: 117/20000 | Percentage: 0.585%
+=============================
+Training loss: 0.01709490062676292
+Bad predictions: 131/20000 | Percentage: 0.655%
+=============================
+Training loss: 0.01558597703831133
+Bad predictions: 151/20000 | Percentage: 0.755%
+=============================
+Training loss: 0.014204075265098193
+Bad predictions: 125/20000 | Percentage: 0.625%
+=============================
+Training loss: 0.016036034894641494
+Bad predictions: 124/20000 | Percentage: 0.62%
+=============================
+Training loss: 0.011349316337923214
+Bad predictions: 193/20000 | Percentage: 0.965%
+=============================
+Training loss: 0.014031609296568017
+Bad predictions: 61/20000 | Percentage: 0.305%
+=============================
+Training loss: 0.00948114688991296
+Bad predictions: 238/20000 | Percentage: 1.19%
+=============================
+Training loss: 0.013590594850147096
+Bad predictions: 74/20000 | Percentage: 0.37%
+=============================
+Training loss: 0.008387459444232333
+Bad predictions: 131/20000 | Percentage: 0.655%
+=============================
+Training loss: 0.01200269402733064
+Bad predictions: 105/20000 | Percentage: 0.525%
+=============================
+Training loss: 0.011515538609645222
+Bad predictions: 82/20000 | Percentage: 0.41%
+=============================
+Training loss: 0.011049101337722326
+Bad predictions: 66/20000 | Percentage: 0.33%
+=============================
+Training loss: 0.012435534338194448
+Bad predictions: 154/20000 | Percentage: 0.77%
+=============================
+Training loss: 0.010595292778257076
+Bad predictions: 132/20000 | Percentage: 0.66%
+=============================
+Training loss: 0.013134730414225257
+Bad predictions: 167/20000 | Percentage: 0.835%
+=============================
+Training loss: 0.007154320689441849
+Bad predictions: 49/20000 | Percentage: 0.245%
+=============================
+Training loss: 0.007119235221585075
+Bad predictions: 80/20000 | Percentage: 0.4%
+=============================
+Training loss: 0.006575784610209291
+Bad predictions: 103/20000 | Percentage: 0.515%
+=============================
+Training loss: 0.008543437638778401
+Bad predictions: 216/20000 | Percentage: 1.08%
+=============================
+Training loss: 0.009475655986942303
+Bad predictions: 59/20000 | Percentage: 0.295%
+=============================
+Training loss: 0.009208137482535978
+Bad predictions: 148/20000 | Percentage: 0.74%
+=============================
+Training loss: 0.009320183418090737
+Bad predictions: 47/20000 | Percentage: 0.235%
+=============================
+Training loss: 0.006390026047492163
+Bad predictions: 172/20000 | Percentage: 0.86%
+=============================
+Training loss: 0.005609287913948267
+Bad predictions: 48/20000 | Percentage: 0.24%
+=============================
+Training loss: 0.007052412572257628
+Bad predictions: 103/20000 | Percentage: 0.515%
+=============================
+Training loss: 0.010180208534363844
+Bad predictions: 89/20000 | Percentage: 0.445%
+=============================
+Training loss: 0.008602798202376853
+Bad predictions: 23/20000 | Percentage: 0.115%
+=============================
+Training loss: 0.00401040730370455
+Bad predictions: 52/20000 | Percentage: 0.26%
+=============================
+Training loss: 0.006447725969608965
+Bad predictions: 41/20000 | Percentage: 0.205%
+=============================
+Training loss: 0.007751042128935603
+Bad predictions: 62/20000 | Percentage: 0.31%
+=============================
+Training loss: 0.0038540965219681974
+Bad predictions: 69/20000 | Percentage: 0.345%
+=============================
+Training loss: 0.008094629886719936
+Bad predictions: 169/20000 | Percentage: 0.845%
+=============================
+Training loss: 0.007160497795502241
+Bad predictions: 73/20000 | Percentage: 0.365%
+=============================
+Training loss: 0.004309992963528367
+Bad predictions: 15/20000 | Percentage: 0.075%
+=============================
+Training loss: 0.01191033911191263
+Bad predictions: 46/20000 | Percentage: 0.23%
+=============================
+Training loss: 0.006687483958457269
+Bad predictions: 108/20000 | Percentage: 0.54%
+=============================
+Training loss: 0.006145153116761909
+Bad predictions: 17/20000 | Percentage: 0.085%
+=============================
+Training loss: 0.004848196683659936
+Bad predictions: 14/20000 | Percentage: 0.07%
+=============================
+Training loss: 0.0029703337878386957
+Bad predictions: 25/20000 | Percentage: 0.125%
+=============================
+Training loss: 0.001237208294166295
+Bad predictions: 0/20000 | Percentage: 0.0%
+=============================
+Training loss: 0.00018598582801931005
+Bad predictions: 0/20000 | Percentage: 0.0%
+=============================
+Training loss: 0.0007751503551629611
+Bad predictions: 29/20000 | Percentage: 0.145%
+=============================
+Training loss: 0.007012822227781073
+Bad predictions: 74/20000 | Percentage: 0.37%
+=============================
+Training loss: 0.0036028077372440015
+Bad predictions: 14/20000 | Percentage: 0.07%
+=============================
+Training loss: 0.0030632124877657697
+Bad predictions: 108/20000 | Percentage: 0.54%
+=============================
+Training loss: 0.005171828050537463
+Bad predictions: 13/20000 | Percentage: 0.065%
+=============================
+Training loss: 0.0017819304239199
+Bad predictions: 62/20000 | Percentage: 0.31%
+=============================
+Training loss: 0.0009388801127342903
+Bad predictions: 14/20000 | Percentage: 0.07%
+=============================
+Training loss: 0.0008250641791573658
+Bad predictions: 1/20000 | Percentage: 0.005%
+=============================
+Training loss: 0.0004720030753167838
+Bad predictions: 4/20000 | Percentage: 0.02%
+=============================
+Training loss: 0.00031658831303795187
+Bad predictions: 2/20000 | Percentage: 0.01%
+=============================
+Training loss: 0.00014915887010434663
+Bad predictions: 0/20000 | Percentage: 0.0%
+=============================
+Training loss: 5.713039517019626e-05
+Bad predictions: 0/20000 | Percentage: 0.0%
+=============================
+Training loss: 9.917970391921749e-05
+Bad predictions: 0/20000 | Percentage: 0.0%
+=============================
+Training loss: 4.362646688445816e-05
+Bad predictions: 0/20000 | Percentage: 0.0%
+=============================
+Training loss: 3.469471203325997e-05
+Bad predictions: 0/20000 | Percentage: 0.0%
+=============================
