@@ -22,6 +22,8 @@ class RegNN(nn.Module):
         x = self.l1(x)
         x = torch.sigmoid(x)
         x = self.l2(x)
+        x = torch.sigmoid(x)
+        x = x.view(-1)
         return x
 
 
@@ -35,7 +37,7 @@ def load_training_data():
     df = df.reset_index(drop=True)
 
     data = df.loc[:, ~df.columns.isin(['quality', 'wine type'])].values
-    target = df.loc[:, df.columns.isin(['quality'])].values
+    target = df['wine type'].map({'red': 1, 'white': 0}).values
 
     x_train, x_test, y_train, y_test = train_test_split(
         data,
@@ -64,8 +66,8 @@ def main():
     model = RegNN()
     model.cpu()
 
-    criterion = nn.MSELoss()
-    optimiser = torch.optim.Adam(model.parameters(), lr=0.01)
+    criterion = nn.BCELoss()
+    optimiser = torch.optim.Adam(model.parameters(), lr=0.001)
 
     loss_lst = []
     x_torch = torch.from_numpy(x_train.astype('float32'))
@@ -74,7 +76,7 @@ def main():
     x_torch_test = torch.from_numpy(x_test.astype('float32'))
     y_torch_test = torch.from_numpy(y_test.astype('float32'))
 
-    for epoch in range(1000):
+    for epoch in range(30000):
         optimiser.zero_grad()
         y_pred = model(x_torch)
         loss = criterion(y_pred, y_torch)
@@ -83,7 +85,7 @@ def main():
         optimiser.step()
 
         print("Epoch: {}    Loss: {}".format(epoch, loss))
-        if epoch % 25 == 0:
+        if epoch % 1000 == 0:
             plot_loss(loss_lst)
 
     for i in range(10):
