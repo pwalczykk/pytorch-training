@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import rospy
 import tf
 from sensor_msgs.msg import JointState
@@ -125,7 +123,7 @@ def main():
     engine = PhysicsEngine()
     robot = MobileRobot(xacro_path)
 
-    robot.print_robot_info()
+    # robot.print_robot_info()
 
     counter = 0
     while not rospy.is_shutdown():
@@ -142,8 +140,8 @@ def main():
         counter += 1
         if counter % 8 == 0:
             robot.publish_joints_state()
-        if counter % 240 == 0:
-            robot.print_robot_status()
+        # if counter % 240 == 0:
+        #     robot.print_robot_status()
 
     engine.disconnect()
 
