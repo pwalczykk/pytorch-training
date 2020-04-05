@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="box">
+
+<!-- CYLINDER INERTIA-->
+    <xacro:macro name="cylinder_inertia" params="radius length mass *origin">
+        <inertial>
+            <mass value="${mass}" />
+            <xacro:insert_block name="origin" />
+            <inertia ixx="${0.0833333 * mass * (3 * radius * radius + length * length)}" ixy="0.0" ixz="0.0"
+                     iyy="${0.0833333 * mass * (3 * radius * radius + length * length)}" iyz="0.0"
+                     izz="${0.5 * mass * radius * radius}" />
+        </inertial>
+    </xacro:macro>
+
+    <xacro:macro name="simple_box" params="name parent trans rot">
+        <link name="${name}">
+            <visual>
+                <geometry>
+                    <box size="1 1 1"/>
+                </geometry>
+            </visual>
+            <collision>
+                <geometry>
+                    <box size="1 1 1"/>
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertia radius="1" length="1" mass="100">
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+            </xacro:cylinder_inertia>
+        </link>
+
+        <joint name="${name}_joint" type="fixed">
+            <parent link="${parent}"/>
+            <child link="${name}"/>
+            <origin rpy="${rot}" xyz="${trans}"/>
+        </joint>
+    </xacro:macro>
+
+    <link name="base_link"/>
+
+    <xacro:simple_box
+        name="simple_box"
+        parent="base_link"
+        trans="0 0 0"
+        rot="0 0 0"
+        />
+
+</robot>
