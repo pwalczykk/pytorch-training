@@ -3,4 +3,5 @@
 002_pybullet_first_steps/random_urdfs
 002_pybullet_first_steps/results
 003_winequality_manning_book/wine-quality
-
+*.pyc
+*.xacro.urdf

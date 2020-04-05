@@ -11,6 +11,7 @@ import subprocess
 
 from pprint import pprint
 
+from pybullet_lidar import PyBulletLidar2D
 
 class PhysicsEngine(object):
     def __init__(self):
@@ -50,8 +51,15 @@ class ROSPublisher(object):
             rotation=pose[1],
             time=rospy.Time.now(),
             child="base_link",
-            parent="map",
+            parent="world",
         )
+
+
+class SceneObject(object):
+    def __init__(self, xacro_path, position, orientation):
+        urdf_path = xacro_path + ".urdf"
+        subprocess.check_call("rosrun xacro xacro.py {} > {}".format(xacro_path, urdf_path), shell=True)
+        self.object_id = p.loadURDF(urdf_path, position, orientation)
 
 
 class MobileRobot(object):
@@ -70,6 +78,11 @@ class MobileRobot(object):
         self.joints_info = [p.getJointInfo(self.robot_id, i) for i in range(self.num_joints)]
         self.joints_states = None
         self.robot_pose = None
+
+        self.lidar_handler = PyBulletLidar2D(
+            frame="lidar",
+            topic="lidar",
+        )
 
     def drive(self, propulsion_wheel_l_target_vel, propulsion_wheel_r_target_vel, max_force):
         target_velocities = [0]*self.num_joints
@@ -118,18 +131,24 @@ class MobileRobot(object):
 
 def main():
     rospy.init_node("simulator_bridge")
-
-    xacro_path = os.getcwd()+"/simple_mobile_platform.xacro"
     engine = PhysicsEngine()
-    robot = MobileRobot(xacro_path)
+
+    robot_path = os.getcwd()+"/simple_mobile_platform.xacro"
+    robot = MobileRobot(robot_path)
+
+    box_path = os.getcwd()+"/simple_box.xacro"
+    box1 = SceneObject(box_path, [5, 5, 1], [0, 0, 0, 1])
+    box2 = SceneObject(box_path, [-5, 5, 1], [0, 0, 0, 1])
+    box3 = SceneObject(box_path, [5, -5, 1], [0, 0, 0, 1])
+    box4 = SceneObject(box_path, [-5, -5, 1], [0, 0, 0, 1])
 
     # robot.print_robot_info()
 
     counter = 0
     while not rospy.is_shutdown():
         robot.drive(
-            propulsion_wheel_l_target_vel=3.0,
-            propulsion_wheel_r_target_vel=2.0,
+            propulsion_wheel_l_target_vel=-3.0,
+            propulsion_wheel_r_target_vel=-2.0,
             max_force=5000,
         )
 
