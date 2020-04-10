@@ -102,7 +102,7 @@ class TestPyBulletLidar2D(object):
 
     def test_genertaing_lidar_rays_in_world_frame(self):
         """
-        Rotate lidar by 90 deg in Z axis, then translate it by vector (3,2,1)
+        Translate lidar by vector (3,2,1), then rotate it by 90 deg in Z axis
         Measure central ending point position.
         :return:
         """
@@ -134,8 +134,8 @@ class TestPyBulletLidar2D(object):
 
         # Central ray end
         ray_1_start_desired = np.array([
-            [0., -1., 0., -2.],
-            [1., 0., 0., 13.],
+            [0., -1., 0., 3.],
+            [1., 0., 0., 12.],
             [0., 0., 1., 1.],
             [0., 0., 0., 1.],
         ])

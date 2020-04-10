@@ -18,7 +18,7 @@ class PyBulletLidar2D(object):
                  angle_min=-np.deg2rad(135),
                  angle_max=np.deg2rad(135),
                  range_min=0.1,
-                 range_max=10,
+                 range_max=100,
                  number_of_rays=270,
                  refresh_rate=15,
                  mock_ros_comm=False
@@ -65,7 +65,7 @@ class PyBulletLidar2D(object):
         if not self._mock_ros_comm:
             self._laser_scan_publisher = rospy.Publisher(self._topic, LaserScan, queue_size=10)
             self._tf_listener = tf.TransformListener()
-            self._timer = rospy.Timer(rospy.Duration.from_sec(1.0/self._refresh_rate), self._compute_and_publish_lidar_scan)
+            self._tf_publisher = tf.TransformBroadcaster()
             self._msg = LaserScan()
             self._msg.header.frame_id = self._frame
             self._msg.range_min = self._range_min
@@ -83,9 +83,9 @@ class PyBulletLidar2D(object):
         assert len(transform) == 2
         assert len(transform[0]) == 3
         assert len(transform[1]) == 4
-        rotation_matrix = tf.transformations.quaternion_matrix(transform[1])
         translation_matrix = tf.transformations.translation_matrix(transform[0])
-        return np.matmul(rotation_matrix, translation_matrix)
+        rotation_matrix = tf.transformations.quaternion_matrix(transform[1])
+        return np.matmul(translation_matrix, rotation_matrix)
 
     @staticmethod
     def _matrix_from_xyz_rpy(xyz, rpy):
@@ -101,6 +101,12 @@ class PyBulletLidar2D(object):
         assert len(matrix[0]) == 4
         return [matrix[0][3], matrix[1][3], matrix[2][3]]
 
+    @staticmethod
+    def _orientation_quat_from_matrix(matrix):
+        assert len(matrix) == 4
+        assert len(matrix[0]) == 4
+        return tf.transformations.quaternion_from_matrix(matrix)
+
     def _compute_scan_angles(self):
 
         assert isinstance(self._number_of_rays, int)
@@ -115,7 +121,9 @@ class PyBulletLidar2D(object):
     def _compute_laser_rays(self):
 
         self._laser_rays = []
+        i = 0
         for angle in self._scan_angles:
+            i += 1
             matrix_starting_point_in_lidar_frame = \
                 self._matrix_from_xyz_rpy(
                     xyz=[self._range_min, 0, 0],
@@ -132,6 +140,14 @@ class PyBulletLidar2D(object):
             matrix_ending_point_in_world_frame = \
                 np.dot(self._matrix_lidar_in_world_frame, matrix_ending_point_in_lidar_frame)
 
+            # self._tf_publisher.sendTransform(
+            #     translation=self._position_from_matrix(matrix_starting_point_in_world_frame),
+            #     rotation=self._orientation_quat_from_matrix(matrix_starting_point_in_world_frame),
+            #     time=rospy.Time.now(),
+            #     child="t_{}".format(i),
+            #     parent="world",
+            # )
+
             self._laser_rays.append([
                 matrix_starting_point_in_world_frame,
                 matrix_ending_point_in_world_frame,
@@ -143,7 +159,7 @@ class PyBulletLidar2D(object):
             tf_lidar_in_world_frame = mock_tf
         else:
             assert not self._mock_ros_comm
-            tf_lidar_in_world_frame = self._tf_listener.lookupTransform(self._frame, "/world", rospy.Time(0))
+            tf_lidar_in_world_frame = self._tf_listener.lookupTransform("/world", self._frame, rospy.Time(0))
 
         self._matrix_lidar_in_world_frame = self._matrix_from_transform(tf_lidar_in_world_frame)
 
@@ -158,6 +174,9 @@ class PyBulletLidar2D(object):
         ray_from_position_list = [self._position_from_matrix(x[0]) for x in self._laser_rays]
         ray_to_position_list = [self._position_from_matrix(x[1]) for x in self._laser_rays]
 
+        # for i in range(len(ray_from_position_list)):
+        #     rospy.loginfo("RAY {}: from {} to {}".format(i, ray_from_position_list[i], ray_to_position_list[i]))
+
         ray_tracing_output = pybullet.rayTestBatch(
             rayFromPositions=ray_from_position_list,
             rayToPositions=ray_to_position_list)
@@ -166,13 +185,12 @@ class PyBulletLidar2D(object):
         self._msg.ranges = []
 
         for ray in ray_tracing_output:
-            rospy.loginfo(ray)
             self._msg.ranges.append(
                 self._range_min + (self._range_max - self._range_min) * ray[2] - 0.01
             )
         self._laser_scan_publisher.publish(self._msg)
 
-    def _compute_and_publish_lidar_scan(self, event):
+    def update(self):
 
         assert self._mock_ros_comm is False
 
@@ -182,3 +200,19 @@ class PyBulletLidar2D(object):
         except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException) as e:
             rospy.logwarn("Failed to update _matrix_lidar_in_world_frame:\n{}".format(e))
 
+
+if __name__ == '__main__':
+
+    rospy.init_node("pybullet_lidar")
+    rospy.sleep(0.1)
+
+    pybullet.connect(pybullet.SHARED_MEMORY)
+
+    lidar_handler = PyBulletLidar2D(
+        frame="lidar",
+        topic="lidar",
+    )
+
+    while not rospy.is_shutdown():
+        lidar_handler.update()
+        rospy.sleep(1.0/240)

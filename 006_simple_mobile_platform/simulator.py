@@ -11,11 +11,10 @@ import subprocess
 
 from pprint import pprint
 
-from pybullet_lidar import PyBulletLidar2D
 
 class PhysicsEngine(object):
     def __init__(self):
-        p.connect(p.GUI)
+        p.connect(p.GUI_SERVER)
         p.setGravity(0, 0, -9.81)
         self.simulation_step = 1.0/240.0
         p.setAdditionalSearchPath(p_data.getDataPath())
@@ -70,7 +69,7 @@ class MobileRobot(object):
         with open(urdf_path, 'r') as urdf:
             rospy.set_param("/robot_description", urdf.read())
 
-        self.robot_id = p.loadURDF(urdf_path, [0, 0, 1], [0, 0, 0, 1])
+        self.robot_id = p.loadURDF(urdf_path, [1, 2, 1], [0, 0, 0, 1])
 
         self.joint_states_pub = ROSPublisher()
 
@@ -78,11 +77,6 @@ class MobileRobot(object):
         self.joints_info = [p.getJointInfo(self.robot_id, i) for i in range(self.num_joints)]
         self.joints_states = None
         self.robot_pose = None
-
-        self.lidar_handler = PyBulletLidar2D(
-            frame="lidar",
-            topic="lidar",
-        )
 
     def drive(self, propulsion_wheel_l_target_vel, propulsion_wheel_r_target_vel, max_force):
         target_velocities = [0]*self.num_joints
