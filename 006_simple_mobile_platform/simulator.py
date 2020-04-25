@@ -36,7 +36,7 @@ class ROSPublisher(object):
         self.tf_broadcaster = tf.TransformBroadcaster()
 
     def publish(self, name, position, velocity, effort, pose):
-        self.joints_msg.header.frame_id = "base_link"
+        self.joints_msg.header.frame_id = "simple_mobile_platform"
         self.joints_msg.header.stamp = rospy.Time.now()
         self.joints_msg.name = name
         self.joints_msg.position = position
@@ -49,7 +49,7 @@ class ROSPublisher(object):
             translation=pose[0],
             rotation=pose[1],
             time=rospy.Time.now(),
-            child="base_link",
+            child="simple_mobile_platform",
             parent="world",
         )
 

@@ -13,7 +13,8 @@ from sensor_msgs.msg import LaserScan
 class PyBulletLidar2D(object):
 
     def __init__(self,
-                 frame,
+                 body,
+                 link,
                  topic,
                  angle_min=-np.deg2rad(135),
                  angle_max=np.deg2rad(135),
@@ -44,7 +45,8 @@ class PyBulletLidar2D(object):
             "LiDAR's refresh_rate ({}) must be positive integer"\
                 .format(refresh_rate)
 
-        self._frame = frame
+        self._body = body
+        self._link = link
         self._topic = topic
         self._range_min = float(range_min)
         self._range_max = float(range_max)
@@ -67,7 +69,7 @@ class PyBulletLidar2D(object):
             self._tf_listener = tf.TransformListener()
             self._tf_publisher = tf.TransformBroadcaster()
             self._msg = LaserScan()
-            self._msg.header.frame_id = self._frame
+            self._msg.header.frame_id = self._link
             self._msg.range_min = self._range_min
             self._msg.range_max = self._range_max
             self._msg.angle_min = self._angle_min
@@ -155,13 +157,30 @@ class PyBulletLidar2D(object):
 
     def _compute_lidar_in_world_frame(self, mock_tf=None):
 
+        def get_body_id_for_body_name(body_name):
+            for i in range(pybullet.getNumBodies()):
+                if pybullet.getBodyInfo(i)[0] == body_name:
+                    return i
+            raise Exception("Body: '{}' not found".format(body_name))
+
+        def get_link_id_for_link_name(body_id, link_name):
+            for i in range(pybullet.getNumJoints(body_id)):
+                if pybullet.getJointInfo(body_id, i)[12] == link_name:
+                    return i
+            raise Exception("Link: '{}' not found".format(link_name))
+
         if mock_tf:
-            tf_lidar_in_world_frame = mock_tf
+            link_transform = mock_tf
         else:
             assert not self._mock_ros_comm
-            tf_lidar_in_world_frame = self._tf_listener.lookupTransform("/world", self._frame, rospy.Time(0))
 
-        self._matrix_lidar_in_world_frame = self._matrix_from_transform(tf_lidar_in_world_frame)
+            body_id = get_body_id_for_body_name(self._body)
+            link_id = get_link_id_for_link_name(body_id, self._link)
+
+            link_state = pybullet.getLinkState(body_id, link_id)
+            link_transform = (link_state[0], link_state[1])
+
+        self._matrix_lidar_in_world_frame = self._matrix_from_transform(link_transform)
 
     def _update_laser_rays(self, mock_tf=None):
 
@@ -209,7 +228,8 @@ if __name__ == '__main__':
     pybullet.connect(pybullet.SHARED_MEMORY)
 
     lidar_handler = PyBulletLidar2D(
-        frame="lidar",
+        body="simple_mobile_platform",
+        link="lidar",
         topic="lidar",
     )
 

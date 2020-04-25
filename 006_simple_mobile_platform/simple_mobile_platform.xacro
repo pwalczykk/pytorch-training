@@ -133,18 +133,18 @@
 
 <!-- ASSEMBLY -->
 
-    <link name="base_link"/>
+    <link name="simple_mobile_platform"/>
 
     <xacro:frame
         name="frame"
-        parent="base_link"
+        parent="simple_mobile_platform"
         trans="0 0 0"
         rot="0 0 0"
         />
 
     <xacro:lidar
         name="lidar"
-        parent="base_link"
+        parent="frame"
         trans="0.2 0 0.18"
         rot="0 0 0"
         />
