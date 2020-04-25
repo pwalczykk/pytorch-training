@@ -12,7 +12,8 @@ class TestPyBulletLidar2D(object):
     def test_generating_scan_angles(self):
 
         lidar_2d = PyBulletLidar2D(
-            frame="dummy",
+            body="dummy",
+            link="dummy",
             topic="dummy",
             angle_min=-10,
             angle_max=20,
@@ -53,7 +54,8 @@ class TestPyBulletLidar2D(object):
         range_max = 10
 
         lidar_2d = PyBulletLidar2D(
-            frame="dummy",
+            body="dummy",
+            link="dummy",
             topic="dummy",
             angle_min=angle_min,
             angle_max=angle_max,
@@ -115,7 +117,8 @@ class TestPyBulletLidar2D(object):
         range_max = 10
 
         lidar_2d = PyBulletLidar2D(
-            frame="dummy",
+            body="dummy",
+            link="dummy",
             topic="dummy",
             angle_min=angle_min,
             angle_max=angle_max,
