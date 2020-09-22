@@ -30,6 +30,12 @@ class PhysicsSimulator:
         pb.setAdditionalSearchPath(pbd.getDataPath())
         self.plane_id = pb.loadURDF('plane.urdf')  # type: int
 
+    def update_plane_color(self):
+        texture_paths = glob.glob(os.path.join('dtd', '**', '*.jpg'), recursive=True)
+        random_texture_path = texture_paths[random.randint(0, len(texture_paths) - 1)]
+        texture_id = pb.loadTexture(random_texture_path)
+        pb.changeVisualShape(self.plane_id, -1, textureUniqueId=texture_id)
+
     def create_object(self):
         random_id = random.randint(0, 999)
 
@@ -95,7 +101,7 @@ class PhysicsSimulator:
     def run_simulation_steps(steps=240):
         for i in range(steps):
             pb.stepSimulation()
-            time.sleep(SIMULATION_TIME_STEP)
+            # time.sleep(SIMULATION_TIME_STEP)
 
 
 def main():
@@ -107,11 +113,12 @@ def main():
 
     for i in range(100):
         date_str = datetime.now().strftime("%Y%m%d-%H%M%S")
-        physics_sim.snap_from_camera([0.1, 0, 5], [0.1, 0, 0], date_str+"-cam0")
-        physics_sim.snap_from_camera([-0.1, 0, 5], [-0.1, 0, 0], date_str+"-cam1")
         physics_sim.delete_object()
         physics_sim.create_object()
+        physics_sim.update_plane_color()
         physics_sim.run_simulation_steps()
+        physics_sim.snap_from_camera([0.1, 0, 5], [0.1, 0, 0], str(i)+"-cam0")
+        physics_sim.snap_from_camera([-0.1, 0, 5], [-0.1, 0, 0], str(i)+"-cam1")
 
 
 if __name__ == '__main__':
